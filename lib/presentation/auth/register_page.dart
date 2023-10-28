@@ -2,10 +2,13 @@ import 'package:e_commerce/common/components/button.dart';
 import 'package:e_commerce/common/components/custom_text_field.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
+import 'package:e_commerce/data/moldels/requests/register_request_model.dart';
+import 'package:e_commerce/presentation/auth/bloc/bloc/register_bloc.dart';
+import 'package:e_commerce/presentation/auth/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/components/space_height.dart';
-
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -37,8 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           const SpaceHeight(12.0),
           Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 130.0),
+              padding: const EdgeInsets.symmetric(horizontal: 130.0),
               child: Image.asset(
                 Images.logo1,
                 width: 100,
@@ -89,11 +91,50 @@ class _RegisterPageState extends State<RegisterPage> {
             obscureText: true,
           ),
           const SpaceHeight(24.0),
-          Button.filled(
-            onPressed: () {
-              Navigator.pop(context);
+          BlocConsumer<RegisterBloc, RegisterState>(
+            listener: (context, state) {
+              state.maybeWhen(orElse: (){}, success: (data){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+               ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content:Text('Berhasil Mendaftar'),
+                  backgroundColor: Colors.green,
+                ),
+                );
+              }, error: (message){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message),
+                  backgroundColor: Colors.red,
+                  ),
+                );
+              }
+              );
             },
-            label: 'Daftar',
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: (){
+                  return Button.filled(
+                onPressed: () {
+                  final data = RegisterRequestModel(
+                    name: nameController.text,
+                    password: passwordController.text,
+                    email: emailController.text,
+                    username: nameController.text.replaceAll('', ''),
+                  );
+                  context
+                      .read<RegisterBloc>()
+                      .add(RegisterEvent.register(data));
+                },
+                label: 'Daftar',
+              );
+                }, 
+                loading:(){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              );
+            }
           ),
           const SpaceHeight(30.0),
           Center(

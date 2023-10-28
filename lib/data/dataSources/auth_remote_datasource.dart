@@ -19,4 +19,19 @@ class AuthRemoteDataSource {
           return left('Server Error');
         }
     }
+    Future<Either<String, AuthResponseModel>> login(
+      RegisterRequestModel data)async{
+        final headers={'Content-Type':'application/json'};
+        final response = await http.post(
+          Uri.parse('${Variables.baseUrl}/api/auth/local'),
+          body: data.toJson(),
+          headers: headers,
+        );
+        if (response.statusCode == 200){
+          return right(AuthResponseModel.fromJson(response.body));
+        }
+        else{
+          return left('Server Error');
+        }
+      }
 }
