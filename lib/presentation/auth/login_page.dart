@@ -5,9 +5,12 @@ import 'package:e_commerce/common/components/space_height.dart';
 import 'package:e_commerce/common/components/space_width.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
+import 'package:e_commerce/data/moldels/requests/login_request_model.dart';
+import 'package:e_commerce/presentation/auth/bloc/bloc/login_bloc.dart';
 import 'package:e_commerce/presentation/auth/register_page.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/components/custom_text_field.dart';
 
@@ -20,11 +23,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
    @override
   void dispose() {
-    usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -66,8 +69,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SpaceHeight(40.0),
           CustomTextField(
-            controller: usernameController,
-            label: 'Username',
+            controller: emailController,
+            label: 'Email',
           ),
           const SpaceHeight(12.0),
           CustomTextField(
@@ -76,16 +79,48 @@ class _LoginPageState extends State<LoginPage> {
             obscureText: true,
           ),
           const SpaceHeight(24.0),
-          Button.filled(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DashboardPage(),
-                ),
-              );
+          BlocConsumer<LoginBloc, LoginState>(
+            listener: (context, state) {
+             state.maybeWhen(orElse:(){}, success:(data){
+                Navigator.pushReplacement(
+                  context,
+                   MaterialPageRoute(builder: (context)=>const DashboardPage(),
+                   ),
+                   );
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:Text("Login Berhasil"),
+                      backgroundColor:Colors.green,
+                    ),
+                    );
+              },
+              error:(error){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(error),
+                  backgroundColor:Colors.red,
+                  ),
+                  );
+              }
+             );
             },
-            label: 'Masuk',
+            builder: (context, state) {
+              return Button.filled(
+                      onPressed: () {
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const DashboardPage(),
+                        //   ),
+                        // );
+                        final data = LoginRequestModel(
+                         identifier: emailController.text,
+                         password: passwordController.text);
+                         context.read<LoginBloc>().add(LoginEvent.login(data));
+                      },
+                      label: 'Masuk',
+                    );
+            },
           ),
           const SpaceHeight(122.0),
           Center(
@@ -114,6 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+            
             ),
           ),
         ],
