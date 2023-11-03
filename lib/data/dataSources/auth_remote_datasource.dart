@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:e_commerce/data/moldels/requests/login_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_commerce/common/constant/variables.dart';
 import 'package:e_commerce/data/moldels/requests/register_request_model.dart';
@@ -20,7 +21,7 @@ class AuthRemoteDataSource {
         }
     }
     Future<Either<String, AuthResponseModel>> login(
-      RegisterRequestModel data)async{
+      LoginRequestModel data)async{
         final headers={'Content-Type':'application/json'};
         final response = await http.post(
           Uri.parse('${Variables.baseUrl}/api/auth/local'),
