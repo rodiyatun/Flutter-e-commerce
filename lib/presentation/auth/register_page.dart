@@ -3,7 +3,7 @@ import 'package:e_commerce/common/components/custom_text_field.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
 import 'package:e_commerce/data/moldels/requests/register_request_model.dart';
-import 'package:e_commerce/presentation/auth/bloc/bloc/register_bloc.dart';
+import 'package:e_commerce/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:e_commerce/presentation/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
