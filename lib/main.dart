@@ -1,4 +1,5 @@
-import 'package:e_commerce/presentation/auth/bloc/bloc/register_bloc.dart';
+import 'package:e_commerce/presentation/auth/bloc/bloc/login_bloc.dart';
+import 'package:e_commerce/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:e_commerce/presentation/auth/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RegisterBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => RegisterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
