@@ -5,8 +5,9 @@ import 'package:e_commerce/common/components/space_height.dart';
 import 'package:e_commerce/common/components/space_width.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
+import 'package:e_commerce/data/dataSources/auth_local_datasource.dart';
 import 'package:e_commerce/data/moldels/requests/login_request_model.dart';
-import 'package:e_commerce/presentation/auth/bloc/bloc/login_bloc.dart';
+import 'package:e_commerce/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:e_commerce/presentation/auth/register_page.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,8 @@ class _LoginPageState extends State<LoginPage> {
           const SpaceHeight(24.0),
           BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
-             state.maybeWhen(orElse:(){}, success:(data){
+             state.maybeWhen(orElse:(){}, success:(data) async{
+              AuthLocalDatasource().saveAuthData(data);
                 Navigator.pushReplacement(
                   context,
                    MaterialPageRoute(builder: (context)=>const DashboardPage(),

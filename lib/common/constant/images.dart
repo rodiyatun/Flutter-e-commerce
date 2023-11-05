@@ -37,4 +37,6 @@ class Images {
 
   //icons.more
   static const String more = 'assets/images/more.png';
+  static const String electronic = 'assets/images/electronic.png';
+   static const String iconbag = 'assets/images/icon_bag.png';
 }
