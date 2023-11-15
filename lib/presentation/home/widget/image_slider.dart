@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class ImageSlider extends StatefulWidget {
   final List<String> items;
-  const ImageSlider({super.key, required this.items});
+  final bool isAssets;
+  const ImageSlider({super.key, required this.items, this.isAssets=true});
 
   @override
   State<ImageSlider> createState() => _ImageSliderState();
@@ -16,14 +17,28 @@ class ImageSlider extends StatefulWidget {
 class _ImageSliderState extends State<ImageSlider> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
+  
+  get image => null;
 
   @override
   Widget build(BuildContext context) {
+    // print('cek');
+    // print(widget.items);
     return Column(
+
       children: [
         CarouselSlider(
-          items: widget.items
+          items: widget.isAssets ? widget.items
+        
               .map((e) => Image.asset(
+                    e,
+                    height: 206.0,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ))
+              .toList() :
+              widget.items
+              .map((e) => Image.network(
                     e,
                     height: 206.0,
                     width: MediaQuery.of(context).size.width,

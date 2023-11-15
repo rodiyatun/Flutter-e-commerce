@@ -1,0 +1,93 @@
+import 'dart:convert';
+
+class OrderRequestModel {
+    final Data data;
+
+    OrderRequestModel({
+        required this.data,
+    });
+
+    factory OrderRequestModel.fromRawJson(String str) => OrderRequestModel.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory OrderRequestModel.fromJson(Map<String, dynamic> json) => OrderRequestModel(
+        data: Data.fromJson(json["data"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": data.toJson(),
+    };
+}
+
+class Data {
+    final List<Item> items;
+    final int totalPrice;
+    final String deliveryAddress;
+    final String courirName;
+    final int courirPrice;
+    final String status;
+
+    Data({
+        required this.items,
+        required this.totalPrice,
+        required this.deliveryAddress,
+        required this.courirName,
+        required this.courirPrice,
+        required this.status,
+    });
+
+    factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+        totalPrice: json["totalPrice"],
+        deliveryAddress: json["deliveryAddress"],
+        courirName: json["courirName"],
+        courirPrice: json["courirPrice"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "totalPrice": totalPrice,
+        "deliveryAddress": deliveryAddress,
+        "courirName": courirName,
+        "courirPrice": courirPrice,
+        "status": status,
+    };
+}
+
+class Item {
+    final int id;
+    final String productName;
+    final int price;
+    final int qty;
+
+    Item({
+        required this.id,
+        required this.productName,
+        required this.price,
+        required this.qty,
+    });
+
+    factory Item.fromRawJson(String str) => Item.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Item.fromJson(Map<String, dynamic> json) => Item(
+        id: json["id"],
+        productName: json["productName"],
+        price: json["price"],
+        qty: json["qty"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "productName": productName,
+        "price": price,
+        "qty": qty,
+    };
+}

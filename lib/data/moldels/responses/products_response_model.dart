@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class ProductsResponseModel {
@@ -28,18 +29,27 @@ class Product {
     final int? id;
     final PurpleAttributes? attributes;
 
-    Product({
-        this.id,
-        this.attributes,
-    });
+  String priceFormat;
+
+  Product({
+    this.id,
+    this.attributes,
+    required this.priceFormat,
+  });
 
     factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
+
+  String? get imagePath => null;
+
+  get quantity => null;
+
+  get price => null;
 
     String toJson() => json.encode(toMap());
 
     factory Product.fromMap(Map<String, dynamic> json) => Product(
         id: json["id"],
-        attributes: json["attributes"] == null ? null : PurpleAttributes.fromMap(json["attributes"]),
+        attributes: json["attributes"] == null ? null : PurpleAttributes.fromMap(json["attributes"]), priceFormat: '',
     );
 
     Map<String, dynamic> toMap() => {
@@ -182,6 +192,11 @@ class FluffyAttributes {
 
 class Images {
     final List<ImagesDatum>? data;
+
+  // ignore: prefer_typing_uninitialized_variables
+  static var product3;
+
+  // static String iconTrash;
 
     Images({
         this.data,

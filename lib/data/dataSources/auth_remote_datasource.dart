@@ -35,4 +35,6 @@ class AuthRemoteDataSource {
           return left('Server Error');
         }
       }
+
+  getToken() {}
 }

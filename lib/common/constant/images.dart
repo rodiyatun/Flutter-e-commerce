@@ -39,4 +39,7 @@ class Images {
   static const String more = 'assets/images/more.png';
   static const String electronic = 'assets/images/electronic.png';
    static const String iconbag = 'assets/images/icon_bag.png';
+
+  static String iconTrash ='assets/icons/Trash.png';
+   static String empetyCart ='assets/icons/icons8-empty-cart.gif';
 }

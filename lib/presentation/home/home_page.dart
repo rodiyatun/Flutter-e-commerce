@@ -3,6 +3,8 @@ import 'package:e_commerce/common/components/space_height.dart';
 import 'package:e_commerce/common/components/space_width.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
+import 'package:e_commerce/presentation/cart/bloc/cart/cart_bloc.dart';
+import 'package:e_commerce/presentation/cart/cart_page.dart';
 import 'package:e_commerce/presentation/home/bloc/products/products_bloc.dart';
 import 'package:e_commerce/presentation/home/widget/category_button.dart';
 import 'package:e_commerce/presentation/home/widget/image_slider.dart';
@@ -10,6 +12,7 @@ import 'package:e_commerce/presentation/home/widget/product_card.dart';
 import 'package:e_commerce/presentation/home/widget/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,18 +107,50 @@ class _HomePageState extends State<HomePage> {
               const Spacer(),
               Row(
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SizedBox()),
+                  badges.Badge(
+                    badgeContent:  BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          orElse: (){
+                            return const Text(
+                          '0',
+                          style: TextStyle(color: Colors.white),
                         );
                       },
-                      icon: Image.asset(
-                        Images.iconBuy,
-                        height: 24.0,
-                      )),
+                      loaded: (carts){
+                        int totalQuantity =0;
+                        for (var cart in carts){
+                          totalQuantity +=cart.quantity;
+                        }
+                        
+
+                        return Text(totalQuantity.toString(),
+                        style: const TextStyle(color: Colors.white),
+                        );
+
+                          },
+                        );
+                        // return Text(
+                        //   '3', style: TextStyle(color: Colors.white),
+                        // );
+                       
+                      },
+                    ),
+
+                    
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CartPage()),
+                          );
+                        },
+                        icon: Image.asset(
+                          Images.iconBuy,
+                          height: 24.0,
+                        )),
+                  ),
                   IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -193,35 +228,30 @@ class _HomePageState extends State<HomePage> {
           const SpaceHeight(9.0),
           BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state) {
-              return state.maybeWhen(
-                orElse: (){
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-                loaded: (model){
-                      return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 55.0,
-                  childAspectRatio: 3/4,
-                ),
-                itemCount: model.data!.length,
-                itemBuilder: (context, index) => ProductCard(
-                  data: model.data![index],
-                ),
-              );
-
-                }
+              return state.maybeWhen(orElse: () {
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-          
+              }, loaded: (model) {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 55.0,
+                    childAspectRatio: 3 / 4,
+                  ),
+                  itemCount: model.data!.length,
+                  itemBuilder: (context, index) => ProductCard(
+                    data: model.data![index],
+                  ),
+                );
+              });
             },
           ),
         ],
       ),
-    );
+      );
   }
 }

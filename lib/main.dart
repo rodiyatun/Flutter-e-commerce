@@ -2,6 +2,8 @@ import 'package:e_commerce/data/dataSources/auth_local_datasource.dart';
 import 'package:e_commerce/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:e_commerce/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:e_commerce/presentation/auth/login_page.dart';
+import 'package:e_commerce/presentation/cart/bloc/cart/cart_bloc.dart';
+import 'package:e_commerce/presentation/cart/bloc/order/order_bloc.dart';
 import 'package:e_commerce/presentation/home/bloc/products/products_bloc.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ProductsBloc()..add(const ProductsEvent.getAll()),
+        ),
+         BlocProvider(
+          create: (context) => CartBloc(),
+        ),
+         BlocProvider(
+          create: (context) => OrderBloc(),
         ),
       ],
       child: MaterialApp(
