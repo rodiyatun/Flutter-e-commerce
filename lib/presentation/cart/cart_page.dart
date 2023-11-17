@@ -1,17 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+
+import 'package:e_commerce/data/moldels/requests/order_request_model.dart';
 import 'package:e_commerce/presentation/cart/bloc/cart/cart_bloc.dart';
 import 'package:e_commerce/presentation/cart/bloc/order/order_bloc.dart';
+import 'package:e_commerce/presentation/payment/payment_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:e_commerce/common/components/button.dart';
-import 'package:e_commerce/common/components/custom_dropdoewn.dart';
 import 'package:e_commerce/common/components/row_text.dart';
 import 'package:e_commerce/common/components/space_height.dart';
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/extensions/int_ext.dart';
 import 'package:e_commerce/presentation/cart/widgets/cart_tile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class CartPage extends StatefulWidget {
   const CartPage({
@@ -23,10 +26,13 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  
   @override
   void initState() {
     super.initState();
   }
+List<Item> items=[];
+ int localTotalPrice=0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,43 +40,18 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         title: const Text('Keranjang'),
       ),
-      body: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          return ListView(
+      body: ListView(
             padding: const EdgeInsets.all(16.0),
             children: [
-              // if (carts.isEmpty)
-              // Center(
-              //   child: Padding(
-              //     padding: EdgeInsets.only(
-              //         top: MediaQuery.of(context).size.height * 0.2),
-              //     // child: Column(
-              //     //   children: [
-              //     //     // const Text(
-              //     //     //   'Oppsss..\nKeranjang Anda kosong nih!',
-              //     //     //   style: TextStyle(fontSize: 18.0),
-              //     //     //   textAlign: TextAlign.center,
-              //     //     // ),
-              //     //     // const SpaceHeight(20.0),
-              //     //     Button.filled(
-              //     //       width: 120.0,
-              //     //       height: 40.0,
-              //     //       onPressed: () {
-              //     //         Navigator.popUntil(context, (route) => route.isFirst);
-              //     //       },
-              //     //       label: 'Cari yuk',
-              //     //     ),
-              //     //   ],
-              //     // ),
-              //   ),
-              // ),
+              
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   return state.maybeWhen(orElse: () {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  }, loaded: (carts) {
+                  }, 
+                  loaded: (carts) {
                     return ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -87,29 +68,9 @@ class _CartPageState extends State<CartPage> {
                 },
               ),
               const SpaceHeight(70),
-              // if (carts.isNotEmpty) const SpaceHeight(16.0),
-              // //button for choose shipping address
-              // if (carts.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: ColorName.border),
-                ),
-                // margin: const EdgeInsets.symmetric(horizontal: 40),
-                // child: Button.filled(
-                //   width: 60,
-                //   onPressed: () {
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     // //       builder: (context) => const ShippingAddressPage()),
-                //     // );
-                //   },
-                //   label: 'Pilih Alamat Pengiriman',
-                // ),
-              ),
-              const SpaceHeight(16.0),
+              
+              
+           
               // show alamat pengiriman
               // if (carts.isNotEmpty)
               Container(
@@ -169,21 +130,8 @@ class _CartPageState extends State<CartPage> {
               ),
               const SpaceHeight(16.0),
               //container for dropdown courier
-              // if (carts.isNotEmpty)
-              Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    border: Border.all(color: ColorName.border),
-                  ),
-                  child: CustomDropdown(
-                    value: 'JNE',
-                    items: const ['JNE', 'J&T'],
-                    label: 'Kurir',
-                    onChanged: (value) {},
-                  )),
-              // if (carts.isNotEmpty)
-              Container(
+              // // if (carts.isNotEmpty)
+               Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(5.0)),
@@ -202,30 +150,33 @@ class _CartPageState extends State<CartPage> {
                           },
                           loaded: (carts) {
                             int totalPrice = 0;
-                            carts.forEach(((element) {
-                              totalPrice += int.parse(
-                                      element.product.attributes!.price!) *
-                                  element.quantity;
-                            }));
+                            for (var element in carts) {
+                              totalPrice += 
+                              int.parse(element.product.attributes!.price!) * element.quantity;
+                            }
+                           localTotalPrice=totalPrice;
+                            items=carts
+                            .map((e)=>Item(
+                                 id: e.product.id!, 
+                                productName:"Nama Produk", 
+                                price: 0, 
+                                qty: e.quantity,
+                                ),
+                                ) 
+                             
+                                .toList();
+                                
                             return RowText(
                               label: 'Total Harga',
                               value: totalPrice.currencyFormatRp,
                             );
                           },
                         );
-                        // return RowText(
-                        //   label: 'Total Harga',
-                        //   value: 1750000.currencyFormatRp,
-                        //   valueColor: ColorName.primary,
-                        //   fontWeight: FontWeight.w700,
-                        // );
+                       
                       },
                     ),
 
-                    // RowText(
-                    //   label: 'Item (${carts.length})',
-                    //   value: 1750000.currencyFormatRp,
-                    // ),
+                    
                     const SpaceHeight(12.0),
                     const RowText(
                       label: 'Biaya Pengiriman',
@@ -245,11 +196,23 @@ class _CartPageState extends State<CartPage> {
                           },
                           loaded: (carts) {
                             int totalPrice = 0;
-                            carts.forEach(((element) {
+                            for (var element in carts) {
                               totalPrice += int.parse(
-                                      element.product.attributes!.price!) *
+                                  element.product.attributes!.price!) *
                                   element.quantity;
-                            }));
+
+                            }
+                             localTotalPrice = totalPrice;
+                              items = carts
+                            .map((e) => Item(
+                                id: e.product.id!, 
+                                productName:"Nama Produk", 
+                                price: 0, 
+                                qty: e.quantity,
+                                ),
+                                )
+                            .toList();
+                            
                             return RowText(
                               label: 'Total Harga',
                               value: totalPrice.currencyFormatRp,
@@ -263,22 +226,68 @@ class _CartPageState extends State<CartPage> {
                     const SpaceHeight(16.0),
                     BlocConsumer<OrderBloc, OrderState>(
                       listener: (context, state) {
-                        // TODO: implement listener
+                      state.maybeWhen(
+                        orElse: (){},
+                        success: (response){
+                            context.read<CartBloc>().add(const CartEvent.started());
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder:(context){
+                            return  PaymentPage(
+                              invoiceUrl:response.invoiceUrl,
+                            );
+                          } ),
+                          );
+                        }
+                      );
                       },
                       builder: (context, state) {
-                        return Button.filled(
-                          onPressed: () {},
+                        return state.maybeWhen(
+                          orElse:(){
+                            return Button.filled(
+                          onPressed: () {
+                            context.read<OrderBloc>().add(
+                              OrderEvent.order(
+                                OrderRequestModel(
+                                data: Data(
+                                items: items,
+                                totalPrice: localTotalPrice, 
+                                deliveryAddress: 'Majenang, Cilacap', 
+                                courirName:'JNE', 
+                                courirPrice: 0, 
+                                status: 'waiting-payment',
+                                ),
+                                ),
+                                ),
+                                );
+                          },
                           label: 'Bayar Sekarang',
                         );
+                          },
+                          loading: (){
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                          );
+                        
                       },
                     ),
                   ],
                 ),
               ),
+                  // child: CustomDropdown(
+                  //   value: 'JNE',
+                  //   items: const ['JNE', 'J&T'],
+                  //   label: 'Kurir',
+                  //   onChanged: (value) {},
+                  // )),
+              // if (carts.isNotEmpty)
+             
             ],
-          );
-        },
-      ),
-    );
+          ),
+       
+      );
+    
   }
 }

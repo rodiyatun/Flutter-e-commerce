@@ -14,5 +14,5 @@ class CartModel {
 
   String get priceFormat => product.attributes!.price!.currencyFormatRp;
 
-  get attributes => null;
+ 
 }
