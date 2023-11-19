@@ -6,6 +6,7 @@ import 'package:e_commerce/presentation/cart/bloc/cart/cart_bloc.dart';
 import 'package:e_commerce/presentation/cart/bloc/order/order_bloc.dart';
 import 'package:e_commerce/presentation/home/bloc/products/products_bloc.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
+import 'package:e_commerce/presentation/payment/order_detail/order_detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
         ),
          BlocProvider(
           create: (context) => OrderBloc(),
+        ),
+        BlocProvider(
+          create: (context) => OrderDetailBloc(),
         ),
       ],
       child: MaterialApp(

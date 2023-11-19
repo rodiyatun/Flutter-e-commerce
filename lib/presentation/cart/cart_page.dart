@@ -235,6 +235,7 @@ List<Item> items=[];
                             MaterialPageRoute(builder:(context){
                             return  PaymentPage(
                               invoiceUrl:response.invoiceUrl,
+                              orderId:response.externalId ,
                             );
                           } ),
                           );
