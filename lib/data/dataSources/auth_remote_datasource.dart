@@ -28,13 +28,14 @@ class AuthRemoteDataSource {
           body: data.toJson(),
           headers: headers,
         );
+        // print(response.body);
         if (response.statusCode == 200){
-          return right(AuthResponseModel.fromJson(response.body));
+          return right((AuthResponseModel.fromJson(response.body)));
         }
         else{
           return left('Server Error');
         }
       }
 
-  getToken() {}
+ 
 }

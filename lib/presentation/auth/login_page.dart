@@ -84,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
             listener: (context, state) {
              state.maybeWhen(orElse:(){}, success:(data) async{
               AuthLocalDatasource().saveAuthData(data);
+             
                 Navigator.pushReplacement(
                   context,
                    MaterialPageRoute(builder: (context)=>const DashboardPage(),

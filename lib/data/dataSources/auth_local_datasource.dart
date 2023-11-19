@@ -1,3 +1,4 @@
+
 import 'package:e_commerce/data/moldels/responses/auth_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +12,7 @@ Future<void> removeAuthData()async{
   await pref.remove('auth');
 }
 Future<String> getToken() async{
+
   final pref = await SharedPreferences.getInstance();
   final authJson= pref.getString('auth') ?? '';
   final authData =AuthResponseModel.fromJson(authJson);

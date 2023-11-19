@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:e_commerce/presentation/payment/widgets/failed_page.dart';
-import 'package:e_commerce/presentation/payment/widgets/success_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -32,16 +31,7 @@ class _PaymentPageState extends State<PaymentPage> {
             // Update loading bar.
           },
           onPageStarted: (String url) {
-            if (url.contains('status_code=202&transaction_status=deny')) {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return const FailedPage();
-              }));
-            }
-            if (url.contains('status_code=200&transaction_status=settlement')) {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return const SuccessPage();
-              }));
-            }
+          
           },
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
@@ -56,10 +46,10 @@ class _PaymentPageState extends State<PaymentPage> {
       ..loadRequest(Uri.parse(widget.invoiceUrl));
     const oneSec = Duration(seconds: 8);
     Timer.periodic(oneSec, (Timer timer) {
-      //do check payment status here
-      //if status is success, navigate to success page
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-      //   return const SuccessPage();
+      // //do check payment status here
+      // // if status is success, navigate to success page
+      // // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+      // //   return const SuccessPage();
       // }));
     });
     super.initState();
