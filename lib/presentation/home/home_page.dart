@@ -62,11 +62,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final List<String> images = [
       Images.recomendedProductBanner,
-      Images.recomendedProductBanner,
-      Images.recomendedProductBanner,
+      Images.recomendedProductBanner1,
+      Images.recomendedProductBanner2,
+      Images.recomendedProductBanner3,
+      Images.recomendedProductBanner4,
     ];
 
     return Scaffold(
+    
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -81,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
-                      color: ColorName.grey,
+                      color: ColorName.primary,
                     ),
                   ),
                   Row(

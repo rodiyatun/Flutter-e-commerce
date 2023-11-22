@@ -10,7 +10,7 @@ class Images {
   static const String iconCart = 'assets/icons/Cart.png';
 
   //icon user
-  static const String iconUser = 'assets/icons/User.png';
+  static const String iconUser = 'assets/images/user.png';
 
   static const String product1 = 'assets/images/shoes.jpg';
   static const String product2 = 'assets/images/iMac.jpg';
@@ -21,7 +21,16 @@ class Images {
   //     const AssetGenImage('assets/images/Recomended Product Banner.png');
 
   static const String recomendedProductBanner =
-      'assets/images/RecomendedProductBanner.png';
+      'assets/images/shopPayBanner.jpg';
+      static const String recomendedProductBanner1 =
+      'assets/images/banner1.jpg';
+      static const String recomendedProductBanner2 =
+      'assets/images/banner2.jpg';
+       static const String recomendedProductBanner3 =
+      'assets/images/bannerTV.jpg';
+      static const String recomendedProductBanner4 =
+      'assets/images/bannerKursi.jpg';
+     
 
   //icon buy
   static const String iconBuy = 'assets/icons/Buy.png';
@@ -38,7 +47,8 @@ class Images {
   //icons.more
   static const String more = 'assets/images/more.png';
   static const String electronic = 'assets/images/electronic.png';
-   static const String iconbag = 'assets/images/icon_bag.png';
+   static const String iconbag = 'assets/images/bag.png';
+   static const String iconLocation = 'assets/images/location.png';
 
   static String iconTrash ='assets/icons/Trash.png';
    static String empetyCart ='assets/icons/icons8-empty-cart.gif';

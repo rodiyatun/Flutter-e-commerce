@@ -2,6 +2,7 @@
 import 'package:e_commerce/common/constant/colors.dart';
 import 'package:e_commerce/common/constant/images.dart';
 import 'package:e_commerce/presentation/account/account_page.dart';
+import 'package:e_commerce/presentation/cart/cart_page.dart';
 import 'package:e_commerce/presentation/home/home_page.dart';
 
 import 'package:flutter/material.dart';
@@ -19,11 +20,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(
-      child: Text('Explore Page'),
-    ),
-    const Center(child: Text('Cart Page')),
-    const AccountPage(),
+   
+   const CartPage(),
+   const AccountPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -35,8 +34,15 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
+      
       body: _pages[_selectedIndex],
+      
+      
+     
       bottomNavigationBar: BottomNavigationBar(
+        
+        
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: ColorName.primary,
@@ -46,10 +52,8 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: ImageIcon(AssetImage(Images.iconHome)),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage(Images.iconSearch)),
-            label: 'Explore',
-          ),
+         
+        
           BottomNavigationBarItem(
             icon: ImageIcon(AssetImage(Images.iconCart)),
             label: 'Cart',
