@@ -6,10 +6,6 @@ class OrderRequestModel {
   OrderRequestModel({
     required this.data,
   });
-  
-  Map<String, dynamic> toMap() => {
-        "data": data.toMap(),
-      };
 
   factory OrderRequestModel.fromJson(String str) =>
       OrderRequestModel.fromMap(json.decode(str));
@@ -21,6 +17,9 @@ class OrderRequestModel {
         data: Data.fromMap(json["data"]),
       );
 
+  Map<String, dynamic> toMap() => {
+        "data": data.toMap(),
+      };
 }
 
 class Data {

@@ -36,7 +36,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   ];
   @override
   Widget build(BuildContext context) {
-    print(widget.product);
+    // print(widget.product);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detail Produk"),

@@ -7,8 +7,21 @@ import 'package:e_commerce/presentation/cart/bloc/order/order_bloc.dart';
 import 'package:e_commerce/presentation/home/bloc/products/products_bloc.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
 import 'package:e_commerce/presentation/payment/order_detail/order_detail_bloc.dart';
+
+import 'package:e_commerce/presentation/shiping_address/bloc/city/city_bloc.dart';
+
+import 'package:e_commerce/presentation/shiping_address/bloc/subdistrict/subdistrict_bloc.dart';
+
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'presentation/cart/bloc/get_cost/get_cost_bloc.dart';
+import 'presentation/shiping_address/bloc/add_address/add_address_bloc.dart';
+import 'presentation/shiping_address/bloc/get_address/get_address_bloc.dart';
+import 'presentation/shiping_address/bloc/province/province_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +53,25 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => OrderDetailBloc(),
         ),
+         BlocProvider(
+          create: (context) => ProvinceBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CityBloc(),
+        ),
+         BlocProvider(
+          create: (context) => SubdistrictBloc(),
+        ),
+         BlocProvider(
+          create: (context) => AddAddressBloc(),
+        ),
+          BlocProvider(
+          create: (context) => GetAddressBloc(),
+        ),
+         BlocProvider(
+          create: (context) => GetCostBloc(),
+        ),
+        
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

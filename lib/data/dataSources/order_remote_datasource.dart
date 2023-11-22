@@ -2,7 +2,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/common/constant/variables.dart';
 import 'package:e_commerce/data/dataSources/auth_local_datasource.dart';
+import 'package:e_commerce/data/moldels/requests/add_address_request_model.dart';
 import 'package:e_commerce/data/moldels/requests/order_request_model.dart';
+import 'package:e_commerce/data/moldels/responses/add_address_response_model.dart';
+import 'package:e_commerce/data/moldels/responses/get_address_response_model.dart';
 import 'package:e_commerce/data/moldels/responses/order_response_detail_model.dart';
 import 'package:e_commerce/data/moldels/responses/order_response_model.dart';
 
@@ -39,6 +42,41 @@ class OrderRemoteDatasource {
     );
      if (response.statusCode == 200) {
       return right(OrderResponseDetailModel.fromJson(response.body));
+    } else {
+      return left('Server Error');
+    }
+  }
+  Future<Either<String, AddAddressReponseModel>>addAddress(AddAddressRequestModel request )async{
+    final token = await AuthLocalDatasource().getToken();
+    final response= await http.post(
+      Uri.parse('${Variables.baseUrl}/api/addresses'),
+       headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+        
+     body: request.toJson());
+  
+     if (response.statusCode == 200) {
+      return right(AddAddressReponseModel.fromJson(response.body));
+    } else {
+      return left('Server Error');
+    }
+  }
+  Future<Either<String, GetAddressResponseModel>> getAddressByUserId() async {
+    final token = await AuthLocalDatasource().getToken();
+    final user = await AuthLocalDatasource().getUser();
+    final response = await http.get(
+      Uri.parse(
+          '${Variables.baseUrl}/api/addresses?filters[user_id][\$eq]=${user.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return right(GetAddressResponseModel.fromJson(response.body));
     } else {
       return left('Server Error');
     }
