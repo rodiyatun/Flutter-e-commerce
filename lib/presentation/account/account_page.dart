@@ -4,6 +4,7 @@ import '../../common/constant/colors.dart';
 import '../../common/constant/images.dart';
 import '../../data/dataSources/auth_local_datasource.dart';
 import '../auth/login_page.dart';
+import '../order/order_page.dart';
 import '../shiping_address/shipping_address_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -54,10 +55,10 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const OrderPage()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OrderPage()),
+              );
             },
           ),
           ListTile(
@@ -92,11 +93,9 @@ class _AccountPageState extends State<AccountPage> {
                 color: ColorName.primary,
                 fontWeight: FontWeight.w700,
               ),
-              
             ),
-              onTap: () async {
+            onTap: () async {
               await AuthLocalDatasource().removeAuthData();
-              if (!context.mounted) return;
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return const LoginPage();
