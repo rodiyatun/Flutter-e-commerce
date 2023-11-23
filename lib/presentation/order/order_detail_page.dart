@@ -1,19 +1,26 @@
 import 'package:e_commerce/common/extensions/date_time_ext.dart';
 import 'package:e_commerce/common/extensions/int_ext.dart';
-
 import 'package:flutter/material.dart';
 
+
+
+
 import '../../common/components/row_text.dart';
+
 import '../../common/components/space_height.dart';
 import '../../common/constant/colors.dart';
 import '../../common/constant/images.dart';
-
+import '../../data/moldels/responses/buyer_order_response_model.dart';
 import 'models/order_product_model.dart';
 import 'widgets/order_product_tile.dart';
 import 'widgets/order_status.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage({super.key});
+  const OrderDetailPage({
+    Key? key,
+    required this.buyerOrder,
+  }) : super(key: key);
+  final BuyerOrder buyerOrder;
 
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
@@ -34,6 +41,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    int totalItem = 0;
+    int item = 0;
+    for (var element in widget.buyerOrder.attributes.items) {
+      totalItem += element.qty * element.price;
+      item += element.qty;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Pesanan'),
@@ -42,7 +55,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         padding: const EdgeInsets.all(16.0),
         children: [
           const OrderStatus(
-            status: ['Pending', 'Dikemas', 'Dikirim'],
+            status: ['Dikemas'],
           ),
           const SpaceHeight(24.0),
           const Text(
@@ -53,9 +66,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: products.length,
+            itemCount: widget.buyerOrder.attributes.items.length,
             itemBuilder: (context, index) => OrderProductTile(
-              data: products[index],
+              data: widget.buyerOrder.attributes.items[index],
             ),
           ),
           const SpaceHeight(24.0),
@@ -74,23 +87,24 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               children: [
                 RowText(
                   label: 'Waktu Pengiriman',
-                  value: DateTime.now().toFormattedDateWithDay(),
+                  value: widget.buyerOrder.attributes.createdAt
+                      .toFormattedDateWithDay(),
                 ),
                 const SpaceHeight(12.0),
-                const RowText(
+                RowText(
                   label: 'Ekspedisi Pengiriman',
-                  value: 'JNE Regular',
+                  value: widget.buyerOrder.attributes.courierName,
                 ),
                 const SpaceHeight(12.0),
-                const RowText(
+                RowText(
                   label: 'No. Resi',
-                  value: 'QQNSU346JK',
+                  value: widget.buyerOrder.attributes.noResi,
                 ),
                 const SpaceHeight(12.0),
-                const RowText(
-                  label: 'Alamat',
-                  value: 'Jalan suka cita no 12',
-                ),
+                // const RowText(
+                //   label: 'Alamat',
+                //   value: 'Jalan suka cita no 12',
+                // ),
               ],
             ),
           ),
@@ -109,18 +123,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             child: Column(
               children: [
                 RowText(
-                  label: 'Item (2)',
-                  value: 1900000.currencyFormatRp,
+                  label: 'Total Item ($item) ',
+                  value: totalItem.currencyFormatRp,
                 ),
                 const SpaceHeight(12.0),
                 RowText(
                   label: 'Ongkir',
-                  value: 120000.currencyFormatRp,
+                  value: widget
+                      .buyerOrder.attributes.courierPrice.currencyFormatRp,
                 ),
                 const SpaceHeight(12.0),
                 RowText(
                   label: 'Total ',
-                  value: 2020000.currencyFormatRp,
+                  value:
+                      widget.buyerOrder.attributes.totalPrice.currencyFormatRp,
                   valueColor: ColorName.primary,
                   fontWeight: FontWeight.w700,
                 ),
