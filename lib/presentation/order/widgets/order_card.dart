@@ -1,25 +1,30 @@
-
+import 'package:e_commerce/common/extensions/int_ext.dart';
 import 'package:flutter/material.dart';
+
 
 import '../../../common/components/button.dart';
 import '../../../common/components/row_text.dart';
-import '../../../common/components/space_height.dart';
 
+
+import '../../../common/components/space_height.dart';
 import '../../../common/constant/colors.dart';
-import '../models/transaction_model.dart';
+import '../../../data/moldels/responses/buyer_order_response_model.dart';
+import '../manifest_delivery_page.dart';
+import '../order_detail_page.dart';
 
 class OrderCard extends StatelessWidget {
-  final TransactionModel data;
+  final BuyerOrder data;
   const OrderCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const OrderDetailPage()),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const OrderDetailPage()),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -33,16 +38,18 @@ class OrderCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'NO RESI: ${data.noResi}',
+                  'NO RESI: ${data.attributes.noResi}',
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
                 Button.filled(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => const ManifestDeliveryPage()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ManifestDeliveryPage(
+                                buyerOrder: data,
+                              )),
+                    );
                   },
                   label: 'Lacak',
                   height: 20.0,
@@ -52,11 +59,13 @@ class OrderCard extends StatelessWidget {
               ],
             ),
             const SpaceHeight(24.0),
-            RowText(label: 'Status', value: data.status),
+            RowText(label: 'Status', value: data.attributes.status),
             const SpaceHeight(12.0),
-            RowText(label: 'Item', value: data.item),
+            // RowText(label: 'Item', value: data.item),
             const SpaceHeight(12.0),
-            RowText(label: 'Harga', value: data.priceFormat),
+            RowText(
+                label: 'Harga',
+                value: data.attributes.totalPrice.currencyFormatRp),
           ],
         ),
       ),

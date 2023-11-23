@@ -1,4 +1,5 @@
 import 'package:e_commerce/common/extensions/int_ext.dart';
+import 'package:e_commerce/data/dataSources/auth_local_datasource.dart';
 import 'package:e_commerce/presentation/cart/widgets/cart_tile.dart';
 import 'package:e_commerce/presentation/order/models/courier.dart';
 import 'package:e_commerce/presentation/shiping_address/bloc/get_address/get_address_bloc.dart';
@@ -37,6 +38,8 @@ class _CartPageState extends State<CartPage> {
   int localTotalPrice = 0;
 
   int idAddress = 0;
+  String courierName='jne';
+  int courierPrice=0;
 
   @override
   Widget build(BuildContext context) {
@@ -199,10 +202,11 @@ class _CartPageState extends State<CartPage> {
                     items: couriers,
                     label: 'Kurir',
                     onChanged: (value) {
+                      courierName=value!.code;
                       context.read<GetCostBloc>().add(GetCostEvent.getCost(
                             origin: subdistricOrigin,
                             destination: idAddress.toString(),
-                            courier: value!.code,
+                            courier: value.code,
                           ));
                     },
                   )),
@@ -268,6 +272,8 @@ class _CartPageState extends State<CartPage> {
                             );
                           },
                           loaded: (cost) {
+                            courierPrice=cost.rajaongkir.results.first.costs.first.cost.first.value;
+                          
                             return RowText(
                               label: 'Biaya Pengiriman',
                               value: cost.rajaongkir.results.first.costs.first
@@ -340,7 +346,8 @@ class _CartPageState extends State<CartPage> {
                         return state.maybeWhen(
                           orElse: () {
                             return Button.filled(
-                              onPressed: () {
+                              onPressed: () async{
+                                final user=await AuthLocalDatasource().getUser();
                                 context.read<OrderBloc>().add(
                                       OrderEvent.order(
                                         OrderRequestModel(
@@ -349,9 +356,10 @@ class _CartPageState extends State<CartPage> {
                                             totalPrice: localTotalPrice,
                                             deliveryAddress:
                                                 'Jeparaloka, Jepara',
-                                            courierName: 'JNE',
-                                            courierPrice: 0,
+                                            courierName: courierName,
+                                            courierPrice:courierPrice,
                                             status: 'waiting-payment',
+                                            buyerId: user.id!,
                                           ),
                                         ),
                                       ),

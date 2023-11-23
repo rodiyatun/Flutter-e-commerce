@@ -11,7 +11,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   CityBloc() : super(const _Initial()) {
     on<_GetAllByProvinceId>((event, emit) async{
      emit (const _Loading());
-     final response=await RajaOngkirRemoteDataSource().getCities(event.province);
+     final response=await RajaOngkirRemoteDatasource().getCities(event.province);
      response.fold(
       (l) => emit(_Error(l)), 
       (r) => emit(_Loaded(r.rajaongkir.results)),

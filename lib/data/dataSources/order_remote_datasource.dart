@@ -11,6 +11,8 @@ import 'package:e_commerce/data/moldels/responses/order_response_model.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../moldels/responses/buyer_order_response_model.dart';
+
 class OrderRemoteDatasource {
   Future<Either<String, OrderResponseModel>> order(
       OrderRequestModel request) async {
@@ -46,6 +48,26 @@ class OrderRemoteDatasource {
       return left('Server Error');
     }
   }
+   Future<Either<String, BuyerOrderResponseModel>> getOrderByBuyerId() async {
+    final token = await AuthLocalDatasource().getToken();
+    final user = await AuthLocalDatasource().getUser();
+    final response = await http.get(
+      Uri.parse(
+          '${Variables.baseUrl}/api/orders?filters[buyerId][\$eq]=${user.id}}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return right(BuyerOrderResponseModel.fromJson(response.body));
+    } else {
+      return left('Server Error');
+    }
+  }
+
+  
   Future<Either<String, AddAddressReponseModel>>addAddress(AddAddressRequestModel request )async{
     final token = await AuthLocalDatasource().getToken();
     final response= await http.post(
@@ -81,6 +103,7 @@ class OrderRemoteDatasource {
       return left('Server Error');
     }
   }
+ 
 }
 // import 'package:dartz/dartz.dart';
 // import 'package:e_commerce/common/constant/variables.dart';

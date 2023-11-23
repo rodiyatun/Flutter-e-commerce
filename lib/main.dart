@@ -2,10 +2,16 @@ import 'package:e_commerce/data/dataSources/auth_local_datasource.dart';
 import 'package:e_commerce/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:e_commerce/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:e_commerce/presentation/auth/login_page.dart';
+import 'package:e_commerce/presentation/cart/bloc/bloc/cek_resi_bloc.dart';
+
 import 'package:e_commerce/presentation/cart/bloc/cart/cart_bloc.dart';
+
+
 import 'package:e_commerce/presentation/cart/bloc/order/order_bloc.dart';
 import 'package:e_commerce/presentation/home/bloc/products/products_bloc.dart';
 import 'package:e_commerce/presentation/home/widget/dashboard_page.dart';
+import 'package:e_commerce/presentation/order/bloc/bloc/buyer_order_bloc.dart';
+
 import 'package:e_commerce/presentation/payment/order_detail/order_detail_bloc.dart';
 
 import 'package:e_commerce/presentation/shiping_address/bloc/city/city_bloc.dart';
@@ -70,6 +76,13 @@ class MyApp extends StatelessWidget {
         ),
          BlocProvider(
           create: (context) => GetCostBloc(),
+        ),
+        
+        BlocProvider(
+          create: (context) => BuyerOrderBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CekResiBloc(),
         ),
         
       ],

@@ -1,10 +1,11 @@
+import 'package:e_commerce/presentation/order/order_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/constant/colors.dart';
 import '../../common/constant/images.dart';
 import '../../data/dataSources/auth_local_datasource.dart';
 import '../auth/login_page.dart';
-import '../order/order_page.dart';
+
 import '../shiping_address/shipping_address_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _AccountPageState extends State<AccountPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const OrderPage()),
+                MaterialPageRoute(builder: (context) =>  const OrderPage()),
               );
             },
           ),
